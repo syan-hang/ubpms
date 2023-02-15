@@ -26,7 +26,8 @@
 </template>
 
 <script>
-import { nameRule,passRule } from "../utils/validate.js";
+import { nameRule, passRule } from "../utils/validate.js";
+import { setToken, getToken } from "../utils/tokenManage";
 export default {
   data() {
     return {
@@ -34,10 +35,10 @@ export default {
         username: "",
         password: "",
       },
-      rules:{
-        username:[{validator:nameRule,trigger:'blur'}],
-        password:[{validator:passRule,trigger:'blur'}]
-      }
+      rules: {
+        username: [{ validator: nameRule, trigger: "blur" }],
+        password: [{ validator: passRule, trigger: "blur" }],
+      },
     };
   },
   methods: {
@@ -45,6 +46,9 @@ export default {
       this.$refs[form].validate((valid) => {
         if (valid) {
           console.log(this.form);
+          // set Token
+          setToken("userName", this.form.username + ": TokenAfterLogin");
+          console.log(getToken("userName"));
         } else {
           console.error(this.form);
         }
