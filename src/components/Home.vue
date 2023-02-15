@@ -6,6 +6,7 @@
     <el-button type="info">syan!</el-button>
     <el-button type="danger">syan!</el-button>
     <el-button type="success">syan!</el-button>
+    <i class="fa fa-user"></i>
   </div>
 </template>
 
