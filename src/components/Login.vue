@@ -25,9 +25,12 @@
   </div>
 </template>
 
+
+
 <script>
 import { nameRule, passRule } from "../utils/validate.js";
 import { setToken, getToken } from "../utils/tokenManage";
+
 export default {
   data() {
     return {
@@ -45,10 +48,21 @@ export default {
     login(form) {
       this.$refs[form].validate((valid) => {
         if (valid) {
-          console.log(this.form);
-          // set Token
-          setToken("userName", this.form.username + ": TokenAfterLogin");
-          console.log(getToken("userName"));
+          // console.log(this.form);
+          // login request
+          this.service.post("/login", this.form).then((res) => {
+            if (res.data.status === 200) {
+              // set Token
+              setToken("token", res.data.token);
+              setToken("username", res.data.username);
+              // console.log(res);
+              this.$message({ message: res.data.message, type: "success" });
+              this.$router.push("/home");
+            } else {
+              console.log("failed");
+            }
+          });
+          console.log(getToken("token"));
         } else {
           console.error(this.form);
         }
@@ -57,6 +71,9 @@ export default {
   },
 };
 </script>
+
+
+
 <style lang="scss">
 .login {
   width: 100%;
