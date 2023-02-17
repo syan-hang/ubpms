@@ -26,7 +26,7 @@ service.interceptors.request.use((config) => {
 service.interceptors.response.use((response) => {
     // 对响应数据做些什么
     // console.log(response)
-    let status, message = response.data
+    let { status, message } = response.data
     if (status != 200) {
         Message({ message: message || 'error', type: 'warning' })
     }
