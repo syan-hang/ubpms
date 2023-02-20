@@ -17,6 +17,7 @@ export default {
 </script>
 
 <style lang="scss">
+// 重置浏览器默认样式
 @import url("./assets/css/reset.css");
 html,
 body {
