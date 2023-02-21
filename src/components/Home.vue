@@ -5,6 +5,7 @@
 			<Menu />
 			<el-container>
 				<el-main>
+					<Breadcrumb></Breadcrumb>
 					<div class="cont">
 						<router-view></router-view>
 					</div>
@@ -19,6 +20,7 @@
 import Header from "./common/Header.vue";
 import Footer from "./common/Footer.vue";
 import Menu from "./common/Menu.vue";
+import Breadcrumb from "./common/Breadcrumb.vue";
 export default {
 	name: "HelloWorld",
 	props: {},
@@ -26,6 +28,7 @@ export default {
 		Header,
 		Footer,
 		Menu,
+		Breadcrumb,
 	},
 	data() {
 		return {};
