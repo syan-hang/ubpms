@@ -16,5 +16,12 @@ export function getStudentList(params){
         url:'/students',
         params
     })
+}
 
+// 通过id删除学生列表表项
+export function delStudentById(id){
+    return service({
+        method:'delete',
+        url: `/students/${id}`
+    })
 }

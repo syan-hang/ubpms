@@ -1,5 +1,18 @@
 <template>
 	<div class="studentList">
+		<!-- 查询姓名表单  -->
+		<el-form :inline="true" :model="formInquire" class="form-inquire" size="small">
+			<el-form-item label="姓名">
+				<el-input v-model="formInquire.name" placeholder="请输入姓名查询"></el-input>
+			</el-form-item>
+			<el-form-item>
+				<el-button type="primary" @click="stuInqureByName">查询</el-button>
+			</el-form-item>
+			<el-form-item>
+				<el-button type="primary" @click="stuReset">重置</el-button>
+			</el-form-item>
+		</el-form>
+		<!-- 学生列表显示 -->
 		<el-table :data="compTable" border style="width: 100%">
 			<el-table-column prop="name" label="姓名" align="center"> </el-table-column>
 			<el-table-column prop="age" label="年龄" align="center"> </el-table-column>
@@ -10,8 +23,12 @@
 			<el-table-column prop="address" label="地址" align="center"> </el-table-column>
 			<el-table-column prop="phone" label="手机号码" align="center"> </el-table-column>
 			<el-table-column label="操作" align="center">
-				<template>
-					<el-button type="danger" size="mini" icon="el-icon-delete"></el-button>
+				<template slot-scope="scope">
+					<el-button
+						type="danger"
+						size="mini"
+						icon="el-icon-delete"
+						@click="del(scope.row)"></el-button>
 				</template>
 			</el-table-column>
 		</el-table>
@@ -28,7 +45,7 @@
 </template>
 
 <script>
-import { getStudentList } from "@/api/api.js";
+import { getStudentList, delStudentById } from "@/api/api.js";
 export default {
 	data() {
 		return {
@@ -36,6 +53,9 @@ export default {
 			currentPage: 1, // 当前页数
 			pageSize: 10, // 每页条数
 			total: 0, // 总数据条数
+			formInquire: {
+				name: "",
+			},
 		};
 	},
 	computed: {
@@ -62,7 +82,7 @@ export default {
 				console.log(res);
 				if (res.status === 200) {
 					this.tableData = res.data.data;
-					this.total = res.data.total;
+					this.total = res.data.data.length;
 					this.tableData.forEach((item) => {
 						// 加字段而不是修改原数据
 						item.sex_text = item.sex === 1 ? "男" : "女";
@@ -72,12 +92,47 @@ export default {
 				}
 			});
 		},
+		del(scope) {
+			// console.log(scope);
+			this.$confirm("此操作将删除该数据, 是否继续?", "提示", {
+				confirmButtonText: "确定",
+				cancelButtonText: "取消",
+				type: "warning",
+			})
+				.then(() => {
+					delStudentById(scope.id).then((res) => {
+						// console.log(res);
+						if (res.data.status === 200) {
+							this.$message({ message: "数据删除成功", type: "success" });
+							this.getData();
+						}
+					});
+				})
+				.catch(() => {
+					this.$message({
+						type: "info",
+						message: "已取消删除",
+					});
+				});
+		},
+		stuInqureByName() {
+			// console.log(this.formInquire.studentName);
+			this.getData(this.formInquire);
+		},
+		stuReset() {
+			this.formInquire.name = "";
+			this.getData();
+		},
 	},
 };
 </script>
 
 <style lang="scss">
 .studentList {
+	.form-inquire {
+		text-align: left;
+		margin: 5px, 0;
+	}
 	.el-pagination {
 		margin-top: 20px;
 	}
