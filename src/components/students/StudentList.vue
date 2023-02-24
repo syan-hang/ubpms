@@ -79,10 +79,11 @@ export default {
 		},
 		getData(params) {
 			getStudentList(params).then((res) => {
-				console.log(res);
+				// console.log(res);
 				if (res.status === 200) {
 					this.tableData = res.data.data;
 					this.total = res.data.data.length;
+					this.currentPage = 1;
 					this.tableData.forEach((item) => {
 						// 加字段而不是修改原数据
 						item.sex_text = item.sex === 1 ? "男" : "女";
