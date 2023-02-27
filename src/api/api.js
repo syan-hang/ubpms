@@ -43,6 +43,7 @@ export function delInfoByid(id){
     })
 }
 
+// 新增和修改只有method不一样，故实际可以封装成一个接口
 // 信息列表添加
 // 由于后端原因，这里需要使用qs模块进行处理，正式项目中一般不需要
 export function addInfo(obj){
