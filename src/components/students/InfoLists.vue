@@ -161,9 +161,8 @@ export default {
 		},
 		del(scope) {
 			// console.log(scope);
-			delData(this, "/info/" + scope.id).then((res) => {
-				console.log(res);
-				this.refresh();
+			delData(this, "/info/" + scope.id).then(() => {
+				getData(this, "/info");
 			});
 		},
 		edit(scope) {
@@ -179,9 +178,11 @@ export default {
 			this.$refs[form].validate((valid) => {
 				if (valid) {
 					let method = this.dialogState == 1 ? "post" : "put";
-					changeData(this, method, "/info", this.dialogForm);
+					changeData(this, method, "/info", this.dialogForm).then(() => {
+						getData(this, "/info");
+						this.$refs[form].resetFields();
+					});
 					this.dialogFormVisible = false;
-					getData(this, "/info");
 				}
 			});
 		},
