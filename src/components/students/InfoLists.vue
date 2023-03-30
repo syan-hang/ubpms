@@ -1,4 +1,5 @@
 <template>
+	<!-- 信息管理 -->
 	<div class="infoMent">
 		<!-- 按钮表单  -->
 		<el-form :inline="true" class="btnForm" size="small">
@@ -37,12 +38,13 @@
 				</template>
 			</el-table-column>
 		</el-table>
+
 		<!-- 添加学生信息的对话框  -->
 		<el-dialog
 			:title="dialogState === 1 ? '添加学生信息' : '修改学生信息'"
 			:visible.sync="dialogFormVisible"
 			width="500px">
-			<el-form :model="dialogForm" :rules="rules" ref="dialogForm">
+			<el-form :model="dialogForm" :rules="rules" ref="refDialogForm">
 				<el-form-item label="姓名" :label-width="formLabelWidth" prop="name">
 					<el-input v-model="dialogForm.name" autocomplete="off"></el-input>
 				</el-form-item>
@@ -76,10 +78,11 @@
 				</el-form-item>
 			</el-form>
 			<div slot="footer" class="dialog-footer">
-				<el-button @click="closeDialogInfo('dialogForm')">取 消</el-button>
-				<el-button type="primary" @click="submitForm('dialogForm')">确 定</el-button>
+				<el-button @click="closeDialogInfo('refDialogForm')">取 消</el-button>
+				<el-button type="primary" @click="submitForm('refDialogForm')">确 定</el-button>
 			</div>
 		</el-dialog>
+
 		<!-- 分页器  -->
 		<el-pagination
 			@size-change="handleSizeChange"
@@ -147,32 +150,39 @@ export default {
 		},
 		addStudentInfo() {
 			this.dialogState = 1;
-			this.dialogForm = {
-				name: "",
-				sex: "1",
-				age: "",
-				father: "",
-				mather: "",
-				time: "",
-				address: "",
-				phone: "",
-			};
+			this.$nextTick(() => {
+				// 当表单加载完毕再进行赋值，防止resetFields失效
+				this.dialogForm = {
+					name: "",
+					sex: "1",
+					age: "",
+					father: "",
+					mather: "",
+					time: "",
+					address: "",
+					phone: "",
+				};
+			});
 			this.dialogFormVisible = true;
 		},
 		del(scope) {
 			// console.log(scope);
 			delData(this, "/info/" + scope.id).then(() => {
+				console.log("huang");
 				getData(this, "/info");
 			});
 		},
 		edit(scope) {
 			this.dialogState = 2;
-			this.dialogForm = { ...scope };
+			this.$nextTick(() => {
+				// 当表单加载完毕再进行赋值，防止resetFields失效
+				this.dialogForm = { ...scope };
+			});
 			this.dialogFormVisible = true;
 		},
 		closeDialogInfo(form) {
-			this.dialogFormVisible = false;
 			this.$refs[form].resetFields();
+			this.dialogFormVisible = false;
 		},
 		submitForm(form) {
 			this.$refs[form].validate((valid) => {
@@ -180,8 +190,9 @@ export default {
 					let method = this.dialogState == 1 ? "post" : "put";
 					changeData(this, method, "/info", this.dialogForm).then(() => {
 						getData(this, "/info");
-						this.$refs[form].resetFields();
 					});
+
+					this.$refs[form].resetFields();
 					this.dialogFormVisible = false;
 				}
 			});

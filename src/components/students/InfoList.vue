@@ -159,16 +159,18 @@ export default {
 		},
 		addStudentInfo() {
 			this.dialogState = 1;
-			this.dialogForm = {
-				name: "",
-				sex: "1",
-				age: "",
-				father: "",
-				mather: "",
-				time: "",
-				address: "",
-				phone: "",
-			};
+			this.$nextTick(() => {
+				this.dialogForm = {
+					name: "",
+					sex: "1",
+					age: "",
+					father: "",
+					mather: "",
+					time: "",
+					address: "",
+					phone: "",
+				};
+			});
 			this.dialogFormVisible = true;
 		},
 		del(scope) {
@@ -196,9 +198,9 @@ export default {
 		},
 		edit(scope) {
 			this.dialogState = 2;
-			this.dialogForm = { ...scope };
-			// this.dialogForm.id = "1";
-			// console.log(this.dialogForm);
+			this.$nextTick(() => {
+				this.dialogForm = { ...scope };
+			});
 			this.dialogFormVisible = true;
 		},
 		closeDialogInfo(form) {
