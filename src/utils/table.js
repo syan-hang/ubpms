@@ -75,7 +75,6 @@ export function getTableData(root, url, params, arr) {
                     tableItem[arrItem + '_text'] = tableItem[arrItem] ? '是' : '否';
                 })
             })
-            root.loading = false
         }
     }).catch((err) => {
         console.error(err)

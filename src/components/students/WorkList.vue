@@ -58,11 +58,15 @@ export default {
 				"/works",
 				{ page: this.currentPage, size: this.pageSize },
 				this.col_process
-			).catch((err) => {
-				this.$message("获取数据失败：" + err);
-				this.loading = false;
-				this.currentPage = this.currentPage_bak;
-			});
+			)
+				.then(() => {
+					this.loading = false;
+				})
+				.catch((err) => {
+					this.$message("获取数据失败：" + err);
+					this.loading = false;
+					this.currentPage = this.currentPage_bak;
+				});
 		},
 	},
 };
