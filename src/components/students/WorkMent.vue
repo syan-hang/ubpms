@@ -14,8 +14,8 @@
 </template>
 
 <script>
-import { getTableData } from "@/utils/table.js";
-import Pageing from "../common/Pageing.vue";
+import { getTableData } from "@/utils/table.js"
+import Pageing from "../common/Pageing.vue"
 export default {
 	data() {
 		return {
@@ -23,28 +23,28 @@ export default {
 			total: 0,
 			loading: true,
 			col_process: ["completed"],
-		};
+		}
 	},
 	components: {
 		Pageing,
 	},
-	created() {},
+	created() { },
 	computed: {},
 	methods: {
 		handlePageChange(requestData) {
-			this.currentPage_bak = requestData.page;
-			this.loading = true;
+			this.currentPage_bak = requestData.page
+			this.loading = true
 			getTableData(this, "/works", requestData, this.col_process)
 				.then(() => {
-					this.loading = false;
+					this.loading = false
 				})
 				.catch((err) => {
-					this.$message("获取数据失败：" + err);
-					this.loading = false;
-				});
+					this.$message("获取数据失败：" + err)
+					this.loading = false
+				})
 		},
 	},
-};
+}
 </script>
 
 <style lang="scss">

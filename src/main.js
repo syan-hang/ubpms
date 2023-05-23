@@ -10,6 +10,15 @@ import service from './service.js'
 Vue.prototype.service = service
 Vue.config.productionTip = false
 
+router.beforeEach((to, from, next) => {
+  // 通过local storage 中的username 或者 token 进行验证
+  if (!localStorage.getItem('username')) {
+    if (to.path !== '/login') {
+      next('/login')
+    } else next()
+  } else next()
+})
+
 new Vue({
   // 挂载router
   router,
